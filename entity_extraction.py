@@ -70,41 +70,4 @@ And yes, I stuck to the plan for the day.
 """
 
 
-prompt = f"""
-You are an assistant that extracts structured health and performance data from a free-form audio diary.
-
-The transcript you receive is a spoken summary of the person's day, health metrics, energy levels, and sleep.
-
-Your job is to extract the following fields as JSON. Some fields may not be mentioned — in that case, set the value to null.
-
-Output only valid JSON. No extra explanation.
-
-Here are the fields you must extract:
-
- "date": "YYYY-MM-DD",
-  "am_weight_kg": 0,
-  "estimated_water_intake_liters": 0,
-  "caffeine_mg": 0,
-  "session_performed": "string (e.g. Upper Body, Yoga, Rest Day)",
-  "strength_rating": 0,                  // 1 to 10
-  "cardio_performed": "string",
-  "daily_steps": 0,
-  "morning_readiness": 0,               // 1 to 10
-  "energy_level": 0,                    // 1 to 10
-  "hunger_level": 0,                    // 1 to 10
-  "stress_level": 0,                    // 1 to 10
-  "ill_or_sick": "Y/N",
-  "digestion_issue": "Y/N",
-  "bedtime": "HH:MM (24h format)",     
-  "sleep_duration": "HH:MM",
-  "sleep_quality": 0,                   // 1 to 10
-  "stuck_to_plan": "Y/N"
-
-Make sure values like "Y" or "N" are capitalized. If the speaker said they don’t remember, use null.
-
-Transcript:
-
-{TRANSCRIPT}
-
-"""
 # print(call_gemini_api(prompt))
