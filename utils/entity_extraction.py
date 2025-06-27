@@ -44,28 +44,3 @@ def call_gemini_api(prompt, api_key=None, model="gemini-2.0-flash"):
     except (KeyError, IndexError, json.JSONDecodeError):
         json_output = None
     return json_output
-
-
-# Example usage (remove or comment out in production)
-TRANSCRIPT = """
-Hey, so today’s the 25th of June.
-
-I weighed in at 72.3 kilos this morning. My resting heart rate was around 60, and I checked my blood glucose—it was 92.
-
-I drank about two and a half liters of water, and I think I had maybe 150 milligrams of caffeine—mostly from coffee.
-
-I did a push workout in the evening. I’d say my strength felt about a 7 out of 10—not my best, but decent. Didn’t do cardio today though.
-
-Step count was around 8500.
-
-My morning readiness felt like a 6, energy throughout the day was a 7, hunger was manageable—maybe a 4—and stress was pretty low, I’d say around a 5.
-
-No sickness or digestive issues today.
-
-I went to bed at 11:30 PM and slept for 7 hours and 15 minutes. Sleep quality was a solid 8.
-
-And yes, I stuck to the plan for the day.
-"""
-
-
-# print(call_gemini_api(prompt))

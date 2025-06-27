@@ -52,7 +52,7 @@ def add_values_to_sheet(sample_values):
     values_to_add = [values_to_add[0], values_to_add[1], "", "", *values_to_add[2:]]
 
     start_row = get_next_row()
-    st.warning(f"Writing on row  {start_row}")
+    st.warning(f"Writing to row  {start_row}")
 
     start_col = 2
     end_col = start_col + len(values_to_add) - 1
@@ -61,5 +61,10 @@ def add_values_to_sheet(sample_values):
     range_end = rowcol_to_a1(start_row, end_col)  # e.g. D12
 
     cell_range = f"{range_start}:{range_end}"
-    worksheet.update(cell_range, [values_to_add])
-    st.success("Succesfully added row to sheet")
+    st.write(values_to_add)
+    try:
+        worksheet.update(cell_range, [values_to_add])
+        st.success("👍")
+    except Exception as e:
+        st.error("👎")
+        print(e)
