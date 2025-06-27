@@ -87,4 +87,4 @@ def add_values_to_sheet(sample_values):
         st.rerun()
     except Exception as e:
         st.error("👎")
-        print(e)
+        st.error(e)
