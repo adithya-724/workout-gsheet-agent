@@ -16,12 +16,13 @@ prompt: |
   Use your best judgment to translate qualitative descriptions into 1–10 scores based on tone, wording, and comparisons.
   Output only valid JSON. No extra explanation.
 
+
   Here are the fields you must extract:
   "date": "MM/DD/YYYY",
   "am_weight_kg": 0,
   "estimated_water_intake_liters": 0,
   "caffeine_mg": 0,
-  "session_performed": [1-7],    
+  "session_performed": "[Upper1,Lower1,Upper2,Lower2,Rest]",    
    "strength_rating": [1-10],       
   "cardio_performed": "Yes/No",
   "daily_steps": 0,

@@ -46,7 +46,7 @@ def add_values_to_sheet(sample_values):
 
     values_to_add = list(sample_values.values())
     try:
-        values_to_add[0] = datetime.strptime(values_to_add[0], "%m/%d/%Y")
+        values_to_add[0] = values_to_add[0].strip().replace("'", "")
     except Exception:
         pass
     values_to_add = [values_to_add[0], values_to_add[1], "", "", *values_to_add[2:]]
