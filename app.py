@@ -29,7 +29,7 @@ audio = st.audio_input("")
 # )
 
 if audio is not None:
-    process_btn = st.button("Click to process")
+    process_btn = st.button("process")
     # st.audio(audio, format="audio/wav")
     # st.success("Audio file uploaded successfully!")
     # Save the uploaded file to a temporary location
