@@ -48,7 +48,7 @@ def add_values_to_sheet(sample_values):
     values_to_add = [values_to_add[0], values_to_add[1], "", "", *values_to_add[2:]]
 
     start_row = get_next_row()
-    st.write(f"Writing on row  {start_row}")
+    st.warning(f"Writing on row  {start_row}")
 
     start_col = 2
     end_col = start_col + len(values_to_add) - 1
