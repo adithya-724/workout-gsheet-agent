@@ -21,7 +21,7 @@ prompt: |
   Output only valid JSON. No extra explanation.
 
   Here are the fields you must extract:
-  {
+  
     "date": "MM/DD/YYYY",                            // If you can't extract the date, use a dummy date like "01/01/2023"
     "am_weight_kg": 0,
     "estimated_water_intake_liters": 0,
@@ -40,8 +40,8 @@ prompt: |
     "sleep_duration": "HH:MM",
     "sleep_quality": 0,                              // 1 to 10
     "stuck_to_plan": "Yes" or "No"
-  }
   
+
   Transcript:
 
   {TRANSCRIPT}
