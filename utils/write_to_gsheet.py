@@ -3,7 +3,7 @@ from gspread.utils import rowcol_to_a1
 from google.oauth2.service_account import Credentials
 import streamlit as st
 from datetime import datetime
-from time import time
+import time
 
 # from dotenv import load_dotenv
 import json
@@ -62,7 +62,7 @@ def add_values_to_sheet(sample_values):
     range_end = rowcol_to_a1(start_row, end_col)  # e.g. D12
 
     cell_range = f"{range_start}:{range_end}"
-    st.write(values_to_add)
+    # st.write(values_to_add)
     try:
         worksheet.update(cell_range, [values_to_add])
         st.success("👍")
