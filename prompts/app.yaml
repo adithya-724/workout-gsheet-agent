@@ -1,0 +1,43 @@
+prompt: |
+  You are an assistant that extracts structured health and performance data from a free-form audio diary.
+
+  The transcript you receive is a spoken summary of the person's day, health metrics, energy levels, and sleep.
+
+  Your job is to extract the following fields as JSON. Some fields may not be mentioned — in that case, set the value to null.
+
+  You should infer values like morning_readiness, energy_level, stress_level, sleep_quality, etc., even if they’re described indirectly. For example:
+
+  “I felt super energetic and fresh this morning” → morning_readiness: 8-10
+  “I was sluggish in the morning” → morning_readiness: 3-5
+  “I was tired all day” → energy_level: 2-4
+  “Sleep was pretty rough” → sleep_quality: 2-4
+  “I stuck to my nutrition plan pretty well” → stuck_to_plan: Yes
+
+  Use your best judgment to translate qualitative descriptions into 1–10 scores based on tone, wording, and comparisons.
+  Output only valid JSON. No extra explanation.
+
+  Here are the fields you must extract:
+  "date": "MM/DD/YYYY",
+  "am_weight_kg": 0,
+  "estimated_water_intake_liters": 0,
+  "caffeine_mg": 0,
+  "session_performed": "string (e.g. Upper Body, Yoga, Rest Day)",
+  "strength_rating": 0,
+  "cardio_performed": "Yes/No",
+  "daily_steps": 0,
+  "morning_readiness": 0,
+  "energy_level": 0,
+  "hunger_level": 0,
+  "stress_level": 0,
+  "ill_or_sick": "Yes/No",
+  "digestion_issue": "[None,Gas,Bloating,Stomach ache,Diarrhoea,Multiple of the above]",
+  "bedtime": "HH:MM (24h format)",
+  "sleep_duration": "HH:MM",
+  "sleep_quality": 0,
+  "stuck_to_plan": "Yes/No"
+
+  
+  Transcript:
+
+  {TRANSCRIPT}
+

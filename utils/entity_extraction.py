@@ -1,14 +1,12 @@
 import requests
-import os
-from dotenv import load_dotenv
 import json
 import re
+import streamlit as st
 
-# Load environment variables from .env file
-load_dotenv()
 
 # Get the Gemini API key from environment variable
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+# GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+GEMINI_API_KEY = st.secrets["GEMINI_API_KEY"]
 
 
 def call_gemini_api(prompt, api_key=None, model="gemini-2.0-flash"):

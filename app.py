@@ -1,48 +1,16 @@
 import streamlit as st
-from transcribe import load_model, transcribe_audio
+from utils.transcribe import load_model, transcribe_audio
 import tempfile
-from entity_extraction import call_gemini_api
-from test import add_values_to_sheet
+from utils.entity_extraction import call_gemini_api
+from utils.write_to_gsheet import add_values_to_sheet
+import yaml
 
-st.title("Record Audio in Streamlit")
+st.title("Describe your day")
 
-prompt = """
-You are an assistant that extracts structured health and performance data from a free-form audio diary.
-
-The transcript you receive is a spoken summary of the person's day, health metrics, energy levels, and sleep.
-
-Your job is to extract the following fields as JSON. Some fields may not be mentioned — in that case, set the value to null.
-
-Output only valid JSON. No extra explanation.
-
-Here are the fields you must extract:
-
- "date": "MM//DD/YYYY",
-  "am_weight_kg": 0,
-  "estimated_water_intake_liters": 0,
-  "caffeine_mg": 0,
-  "session_performed": "string (e.g. Upper Body, Yoga, Rest Day)",
-  "strength_rating": 0,                  // 1 to 10
-  "cardio_performed": "Yes/No",
-  "daily_steps": 0,
-  "morning_readiness": 0,               // 1 to 10
-  "energy_level": 0,                    // 1 to 10
-  "hunger_level": 0,                    // 1 to 10
-  "stress_level": 0,                    // 1 to 10
-  "ill_or_sick": "Yes/No",
-  "digestion_issue": "[None,Gas,Bloating,Stomach ache,Diarrhoea,Multiple of the above]",
-  "bedtime": "HH:MM (24h format)",     
-  "sleep_duration": "HH:MM",
-  "sleep_quality": 0,                   // 1 to 10
-  "stuck_to_plan": "Yes/No"
-
-Make sure values like "Yes" or "No" are capitalized. If the speaker said they don’t remember, use empty string.
-
-Transcript:
-
-{TRANSCRIPT}
-
-"""
+# Load prompt from YAML
+with open("prompts/app.yaml", "r", encoding="utf-8") as f:
+    prompt_yaml = yaml.safe_load(f)
+    prompt = prompt_yaml["prompt"]
 
 
 @st.cache_resource
@@ -54,7 +22,7 @@ with st.spinner("Loading model..."):
     model = get_model()
 
 
-audio = st.audio_input("speak")
+audio = st.audio_input("")
 
 # uploaded_file = st.file_uploader(
 #     "Upload an audio file", type=["wav", "mp3", "ogg", "m4a"]

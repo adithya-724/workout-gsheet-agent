@@ -4,7 +4,7 @@ import whisper
 
 # Load the English-only model (small and accurate)
 def load_model():
-    model = whisper.load_model("base.en")
+    model = whisper.load_model("tiny.en")
     return model
 
 
@@ -15,7 +15,3 @@ def transcribe_audio(model, audio_path):
     )  # set fp16=False for CPU
 
     return result["text"]
-
-
-# model = load_model()
-# print(transcribe_audio(model, "sample.mp3"))

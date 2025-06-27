@@ -1,2 +1,5 @@
 service_account.json
 .env
+.ruff_cache
+__pycache__
+secrets.toml
