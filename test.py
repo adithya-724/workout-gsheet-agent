@@ -1,23 +1,36 @@
 import gspread
 from gspread.utils import rowcol_to_a1
 from google.oauth2.service_account import Credentials
-import os
 import streamlit as st
+from datetime import datetime
 
 SCOPE = ["https://www.googleapis.com/auth/spreadsheets"]
 ROW_TRACK_FILE = "row_tracker.txt"
 
 
-def get_next_row(start=120):
-    if os.path.exists(ROW_TRACK_FILE):
-        with open(ROW_TRACK_FILE, "r") as f:
-            last_row = int(f.read().strip())
-            next_row = last_row + 1
-    else:
-        next_row = start
-    with open(ROW_TRACK_FILE, "w") as f:
-        f.write(str(next_row))
-    return next_row
+def is_valid_date(s):
+    try:
+        datetime.strptime(s.strip(), "%m/%d/%Y")
+        return True
+    except ValueError:
+        return False
+
+
+def get_next_row():
+    creds = Credentials.from_service_account_file("service_account.json", scopes=SCOPE)
+    client = gspread.authorize(creds)
+    sheet = client.open_by_key("1-19g2yEjeGBToSOw5lTnmKPnREehoSf6rNNq3zC4wUk")
+    worksheet = sheet.worksheet("Tracker")
+    date_col = worksheet.col_values(2)  # Column A
+    last_valid_row = 1
+
+    for i, val in enumerate(date_col, start=1):
+        if val.strip().lower() == "date":
+            continue
+        if is_valid_date(val):
+            last_valid_row = i
+
+    return last_valid_row + 1
 
 
 def add_values_to_sheet(sample_values):

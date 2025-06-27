@@ -53,23 +53,26 @@ def get_model():
 with st.spinner("Loading model..."):
     model = get_model()
 
-uploaded_file = st.file_uploader(
-    "Upload an audio file", type=["wav", "mp3", "ogg", "m4a"]
-)
-if uploaded_file is not None:
-    st.audio(uploaded_file, format="audio/wav")
-    st.success("Audio file uploaded successfully!")
+
+audio = st.audio_input("speak")
+
+# uploaded_file = st.file_uploader(
+#     "Upload an audio file", type=["wav", "mp3", "ogg", "m4a"]
+# )
+if audio is not None:
+    # st.audio(audio, format="audio/wav")
+    # st.success("Audio file uploaded successfully!")
     # Save the uploaded file to a temporary location
 
     with tempfile.NamedTemporaryFile(
-        delete=False, suffix="." + uploaded_file.name.split(".")[-1]
+        delete=False, suffix="." + audio.name.split(".")[-1]
     ) as tmp_file:
-        tmp_file.write(uploaded_file.read())
+        tmp_file.write(audio.read())
         tmp_file_path = tmp_file.name
 
     with st.spinner("Transcribing audio..."):
         transcription = transcribe_audio(model, tmp_file_path)
-    st.markdown("**Transcript**")
+    st.subheader("**Transcript**")
     st.write(transcription)
     prompt = prompt.format(TRANSCRIPT=transcription)
     with st.spinner("Extracting entities..."):
