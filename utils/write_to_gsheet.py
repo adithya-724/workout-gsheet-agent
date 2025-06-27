@@ -42,6 +42,10 @@ def get_next_row():
     return last_valid_row + 1
 
 
+def is_valid_type(val):
+    return isinstance(val, (str, float, int))
+
+
 def add_values_to_sheet(sample_values):
     worksheet = sheet.worksheet("Tracker")
 
@@ -51,6 +55,19 @@ def add_values_to_sheet(sample_values):
     except Exception:
         pass
     values_to_add = [values_to_add[0], values_to_add[1], "", "", *values_to_add[2:]]
+
+    # Optionally, you can coerce values to string if not valid, or log a warning
+    cleaned_values = []
+    for v in values_to_add:
+        if is_valid_type(v):
+            cleaned_values.append(v)
+        else:
+            st.warning(
+                f"Value {v} is not a string, float, or int. Converting to string."
+            )
+            cleaned_values.append(str(v))
+
+    values_to_add = cleaned_values
 
     start_row = get_next_row()
     st.warning(f"Writing to row  {start_row}")

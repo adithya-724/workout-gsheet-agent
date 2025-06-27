@@ -18,7 +18,7 @@ prompt: |
 
 
   Here are the fields you must extract:
-  "date": "MM/DD/YYYY",
+  "date": "MM/DD/YYYY", // If you are not able to extract a date, just give a dummy date in the specified format
   "am_weight_kg": 0,
   "estimated_water_intake_liters": 0,
   "caffeine_mg": 0,
