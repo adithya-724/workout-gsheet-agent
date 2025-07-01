@@ -2,7 +2,8 @@ import gspread
 from gspread.utils import rowcol_to_a1
 from google.oauth2.service_account import Credentials
 import streamlit as st
-from datetime import datetime
+
+# from datetime import datetime
 import time
 
 # from dotenv import load_dotenv
@@ -20,26 +21,26 @@ client = gspread.authorize(creds)
 sheet = client.open_by_key(SHEET_ID)
 
 
-def is_valid_date(s):
-    try:
-        datetime.strptime(s.strip(), "%m/%d/%Y")
-        return True
-    except ValueError:
-        return False
+# def is_valid_date(s):
+#     try:
+#         datetime.strptime(s.strip(), "%m/%d/%Y")
+#         return True
+#     except ValueError:
+#         return False
 
 
 def get_next_row():
     worksheet = sheet.worksheet("Tracker")
-    date_col = worksheet.col_values(2)  # Column A
-    last_valid_row = 1
+    marker_col = worksheet.col_values(1)  # Column A
+    last_marker_row = 1
 
-    for i, val in enumerate(date_col, start=1):
-        if val.strip().lower() == "date":
-            continue
-        if is_valid_date(val):
-            last_valid_row = i
+    for i, val in enumerate(marker_col, start=1):
+        if val.strip().lower() == "new_week":
+            last_marker_row = i
+        # if is_valid_date(val):
+        #     last_valid_row = i
 
-    return last_valid_row + 1
+    return last_marker_row + 1
 
 
 def is_valid_type(val):
@@ -88,3 +89,6 @@ def add_values_to_sheet(sample_values):
     except Exception as e:
         st.error("👎")
         st.error(e)
+
+
+print(get_next_row())
