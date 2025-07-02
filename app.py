@@ -43,7 +43,8 @@ if audio is not None:
         with st.spinner("Transcribing audio..."):
             transcription = transcribe_audio(model, tmp_file_path)
         st.subheader("**Transcript**")
-        st.write(transcription)
+        # st.write(transcription)
+
         prompt = prompt.format(TRANSCRIPT=transcription)
         with st.spinner("Extracting entities..."):
             json_op = call_gemini_api(prompt)

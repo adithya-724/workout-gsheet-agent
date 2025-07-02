@@ -3,8 +3,8 @@ from gspread.utils import rowcol_to_a1
 from google.oauth2.service_account import Credentials
 import streamlit as st
 
-# from datetime import datetime
-import time
+from datetime import datetime
+# import time
 
 # from dotenv import load_dotenv
 import json
@@ -15,18 +15,47 @@ import json
 SHEET_ID = st.secrets["WORKSHEET_ID"]
 SCOPE = ["https://www.googleapis.com/auth/spreadsheets"]
 ACCOUNT = json.loads(st.secrets["service_account"])
+MARKER_TEXT = "new_week"
 
 creds = Credentials.from_service_account_info(ACCOUNT, scopes=SCOPE)
 client = gspread.authorize(creds)
 sheet = client.open_by_key(SHEET_ID)
 
 
-# def is_valid_date(s):
-#     try:
-#         datetime.strptime(s.strip(), "%m/%d/%Y")
-#         return True
-#     except ValueError:
-#         return False
+def is_valid_date(s):
+    try:
+        datetime.strptime(s.strip(), "%m/%d/%Y")
+        return True
+    except ValueError:
+        return False
+
+
+def get_first_date_row_after_marker():
+    worksheet = sheet.worksheet("Tracker")
+    marker_col = worksheet.col_values(1)  # Column A
+    date_col = worksheet.col_values(2)  # column B
+
+    # ------- 1) locate the marker -------
+    try:
+        marker_row = max(
+            i
+            for i, txt in enumerate(marker_col, start=1)
+            if txt.strip().lower() == MARKER_TEXT.lower()
+        )
+        # print(marker_row)
+    except ValueError:
+        raise RuntimeError("Marker not found in column A")
+
+    # ------- 2) scan for first valid date -------
+    entry_row = None
+    for r in range(marker_row + 1, len(date_col) + 1):
+        # print(r)
+        if is_valid_date(date_col[r - 1]):
+            # print("date", r)
+            entry_row = r + 1
+
+    # ------- 3) no date below marker → first entry situation -------
+    return entry_row if entry_row else marker_row + 1
 
 
 def get_next_row():
@@ -84,11 +113,13 @@ def add_values_to_sheet(sample_values):
     try:
         worksheet.update(cell_range, [values_to_add])
         st.success("👍")
-        time.sleep(5)
-        st.rerun()
+        # time.sleep(5)
+        rerun_btn = st.button("rerun")
+        if rerun_btn:
+            st.rerun()
     except Exception as e:
         st.error("👎")
         st.error(e)
 
 
-print(get_next_row())
+# print(get_first_date_row_after_marker())
