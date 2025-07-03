@@ -30,7 +30,7 @@ def is_valid_date(s):
         return False
 
 
-def get_first_date_row_after_marker():
+def get_next_row():
     worksheet = sheet.worksheet("Tracker")
     marker_col = worksheet.col_values(1)  # Column A
     date_col = worksheet.col_values(2)  # column B
@@ -56,20 +56,6 @@ def get_first_date_row_after_marker():
 
     # ------- 3) no date below marker → first entry situation -------
     return entry_row if entry_row else marker_row + 1
-
-
-def get_next_row():
-    worksheet = sheet.worksheet("Tracker")
-    marker_col = worksheet.col_values(1)  # Column A
-    last_marker_row = 1
-
-    for i, val in enumerate(marker_col, start=1):
-        if val.strip().lower() == "new_week":
-            last_marker_row = i
-        # if is_valid_date(val):
-        #     last_valid_row = i
-
-    return last_marker_row + 1
 
 
 def is_valid_type(val):
