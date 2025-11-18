@@ -15,8 +15,6 @@ with st.expander("Full fields / example"):
     st.write(
         "- Date\n"
         "- AM Weight (Kg)\n"
-        "- RHR\n"
-        "- Blood Glucose\n"
         "- Est Water (L)\n"
         "- Caffeine (MG)\n"
         "- Session Performed\n"
