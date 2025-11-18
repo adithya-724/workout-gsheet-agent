@@ -7,6 +7,18 @@ import yaml
 
 st.subheader("Describe your day")
 
+# Provide spoken-field instructions for the audio input
+st.info(
+    "When recording your audio, please speak the following fields in order, "
+    "separated by commas or new lines:\n\n"
+    "Date, AM Weight (Kg), RHR, Blood Glucose, Est Water (L), Caffeine (MG), "
+    "Session Performed, Strength (1-10), Cardio Performed, Daily Steps, "
+    "Morning Readiness (1-10), Energy (1-10), Hunger (1-10), Stress (1-10), "
+    "Ill/Sickness (Y/N), Digestion Issue?, Bedtime, Duration (Hrs:Mins), "
+    "Quality/Efficiency (1-10), Have you stuck to the plan? (Y/N)\n\n"
+    "Example (speak or read): '2025-11-18, 72.5, 58, 5.6, 2.5, 100, Yes, 8, Yes, 8500, 7, 6, 4, 3, N, No, 23:00, 7:30, 8, Y'"
+)
+
 # Load prompt from YAML
 with open("prompts/app.yaml", "r", encoding="utf-8") as f:
     prompt_yaml = yaml.safe_load(f)
