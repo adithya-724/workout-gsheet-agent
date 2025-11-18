@@ -7,34 +7,34 @@ import yaml
 
 st.subheader("Describe your day")
 
-INSTRUCTIONS = """Please speak the following fields in order (separate by commas or new lines):
+# Short instruction for mobile + collapsible full details/example
+SHORT_INSTR = "Tap record and speak the fields (comma or newline separated). Then tap 'Process' to submit."
+st.info(SHORT_INSTR)
 
-- Date
-- AM Weight (Kg)
-- RHR
-- Blood Glucose
-- Est Water (L)
-- Caffeine (MG)
-- Session Performed
-- Strength (1-10)
-- Cardio Performed
-- Daily Steps
-- Morning Readiness (1-10)
-- Energy (1-10)
-- Hunger (1-10)
-- Stress (1-10)
-- Ill/Sickness (Y/N)
-- Digestion Issue?
-- Bedtime
-- Duration (Hrs:Mins)
-- Quality/Efficiency (1-10)
-- Have you stuck to the plan? (Y/N)
-
-Example:
-2025-11-18, 72.5, 58, 5.6, 2.5, 100, Yes, 8, Yes, 8500, 7, 6, 4, 3, N, No, 23:00, 7:30, 8, Y
-"""
-
-st.info(INSTRUCTIONS)
+with st.expander("Full fields / example"):
+    st.write(
+        "- Date\n"
+        "- AM Weight (Kg)\n"
+        "- RHR\n"
+        "- Blood Glucose\n"
+        "- Est Water (L)\n"
+        "- Caffeine (MG)\n"
+        "- Session Performed\n"
+        "- Strength (1-10)\n"
+        "- Cardio Performed\n"
+        "- Daily Steps\n"
+        "- Morning Readiness (1-10)\n"
+        "- Energy (1-10)\n"
+        "- Hunger (1-10)\n"
+        "- Stress (1-10)\n"
+        "- Ill/Sickness (Y/N)\n"
+        "- Digestion Issue?\n"
+        "- Bedtime\n"
+        "- Duration (Hrs:Mins)\n"
+        "- Quality/Efficiency (1-10)\n"
+        "- Have you stuck to the plan? (Y/N)\n\n"
+        "Example:\n2025-11-18, 72.5, 58, 5.6, 2.5, 100, Yes, 8, Yes, 8500, 7, 6, 4, 3, N, No, 23:00, 7:30, 8, Y"
+    )
 
 # Load prompt from YAML
 with open("prompts/app.yaml", "r", encoding="utf-8") as f:
@@ -51,17 +51,14 @@ with st.spinner("Loading model..."):
     model = get_model()
 
 
-audio = st.audio_input("")
+audio = st.audio_input("Record your entry")
 
 # uploaded_file = st.file_uploader(
 #     "Upload an audio file", type=["wav", "mp3", "ogg", "m4a"]
 # )
 
 if audio is not None:
-    process_btn = st.button("process")
-    # st.audio(audio, format="audio/wav")
-    # st.success("Audio file uploaded successfully!")
-    # Save the uploaded file to a temporary location
+    process_btn = st.button("Process")
     if process_btn:
         with tempfile.NamedTemporaryFile(
             delete=False, suffix="." + audio.name.split(".")[-1]
@@ -71,12 +68,16 @@ if audio is not None:
 
         with st.spinner("Transcribing audio..."):
             transcription = transcribe_audio(model, tmp_file_path)
-        st.subheader("**Transcript**")
-        st.write(transcription)
+
+        with st.expander("Transcript", expanded=False):
+            st.write(transcription)
 
         prompt = prompt.format(TRANSCRIPT=transcription)
         with st.spinner("Extracting entities..."):
             json_op = call_gemini_api(prompt)
-        # st.write(json_op)
+
+        with st.expander("Extracted data (preview)", expanded=False):
+            st.json(json_op)
+
         with st.spinner("Writing data to sheet"):
             add_values_to_sheet(json_op)
