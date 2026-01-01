@@ -9,7 +9,7 @@ import streamlit as st
 GEMINI_API_KEY = st.secrets["GEMINI_API_KEY"]
 
 
-def call_gemini_api(prompt, api_key=None, model="gemini-2.0-flash"):
+def call_gemini_api(prompt, api_key=None, model="gemini-2.5-flash"):
     """
     Makes an API call to Google Gemini with the given prompt.
     Args:
